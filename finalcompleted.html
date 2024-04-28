@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+    <style>
+       
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        #todoInput {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px;
+        }
+
+        #todoList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #todoList li {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        
+        
+        <form id="todoForm">
+            <input type="text" id="todoInput" placeholder="Add a new todo" required>
+            <button type="submit">Add Todo</button>
+        </form>
+
+       
+        <ul id="todoList">
+            
+        </ul>
+    </div>
+
+    <script>
+       
+        let todos = [];
+
+
+        const todoForm = document.getElementById('todoForm');
+        const todoList = document.getElementById('todoList');
+
+        
+        function renderTodos() {
+            
+            todoList.innerHTML = '';
+
+            
+            todos.forEach((todo, index) => {
+                
+                const li = document.createElement('li');
+                li.className = todo.complete ? 'completed' : '';
+
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = todo.complete;
+                checkbox.addEventListener('change', () => {
+                   
+                    todo.complete = !todo.complete;
+                    renderTodos();
+                });
+
+                
+                const text = document.createTextNode(todo.text);
+
+                
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'x';
+                deleteButton.addEventListener('click', () => {
+                    
+                    todos.splice(index, 1);
+                    renderTodos();
+                });
+
+               
+                li.appendChild(checkbox);
+                li.appendChild(text);
+                li.appendChild(deleteButton);
+
+                
+                todoList.appendChild(li);
+            });
+        }
+
+        
+        todoForm.addEventListener('submit', (event) => {
+            
+            event.preventDefault();
+
+            
+            const todoText = document.getElementById('todoInput').value;
+
+            
+            todos.push({ text: todoText, complete: false });
+
+            
+            document.getElementById('todoInput').value = '';
+
+            
+            renderTodos();
+        });
+
+       
+        renderTodos();
+    </script>
+</body>
+</html>
